@@ -6,6 +6,9 @@ import Stripe from "stripe";
 import fetch from "node-fetch";
 import { Product } from "./models/Product.js";
 
+import dotenv from "dotenv";
+dotenv.config();
+
 const app = express();
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
@@ -13,16 +16,19 @@ app.use(cors());
 app.use(bodyParser.json());
 
 mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true });
+console.log("Connecting to:", process.env.MONGO_URI);
 
 // Seed data
-Product.countDocuments({}, async (err, count) => {
+(async () => {
+  const count = await Product.countDocuments({});
   if (count === 0) {
     await Product.insertMany([
       { title: "Poster Jordan Dunk", description: "Poster exclusif inspiré de Jordan.", price: 25, image: "/images/poster-jordan.jpg", isPOD: true },
       { title: "Ballon Basket Pro", description: "Ballon haute qualité grip pro.", price: 45, image: "/images/ballon-pro.jpg", isPOD: false }
     ]);
+    console.log("Mock products inserted");
   }
-});
+})();
 
 app.get("/products", async (req, res) => {
   res.json(await Product.find());
