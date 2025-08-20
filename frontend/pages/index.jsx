@@ -3,7 +3,14 @@ import Link from "next/link";
 
 export default function Home() {
   const [products, setProducts] = useState([]);
-  useEffect(() => { fetch("http://localhost:4000/products").then(r => r.json()).then(setProducts); }, []);
+  useEffect(() => { fetch("http://localhost:4000/products")
+  .then(r => {
+    if (!r.ok) throw new Error("Fetch failed: " + r.status);
+    return r.json();
+  })
+  .then(setProducts)
+  .catch(err => console.error("Frontend fetch error:", err));
+  }, []);
 
   return (
     <div className="p-8 grid grid-cols-1 md:grid-cols-3 gap-4">

@@ -12,10 +12,22 @@ dotenv.config();
 const app = express();
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
-app.use(cors());
+app.use(cors({
+  origin: "http://localhost:3000",
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"]
+}));
+
 app.use(bodyParser.json());
 
-mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect(process.env.MONGO_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+}).then(() => {
+  console.log("✅ Connected to MongoDB");
+}).catch(err => {
+  console.error("❌ MongoDB connection error:", err.message);
+});
 console.log("Connecting to:", process.env.MONGO_URI);
 
 // Seed data
@@ -23,8 +35,8 @@ console.log("Connecting to:", process.env.MONGO_URI);
   const count = await Product.countDocuments({});
   if (count === 0) {
     await Product.insertMany([
-      { title: "Poster Jordan Dunk", description: "Poster exclusif inspiré de Jordan.", price: 25, image: "/images/poster-jordan.jpg", isPOD: true },
-      { title: "Ballon Basket Pro", description: "Ballon haute qualité grip pro.", price: 45, image: "/images/ballon-pro.jpg", isPOD: false }
+      { title: "Poster Jordan Dunk", description: "Poster exclusif inspiré de Jordan.", price: 25, image: "/public/images/poster-jordan.jpg", isPOD: true },
+      { title: "Ballon Basket Pro", description: "Ballon haute qualité grip pro.", price: 45, image: "/public/images/ballon-pro.jpg", isPOD: false }
     ]);
     console.log("Mock products inserted");
   }
