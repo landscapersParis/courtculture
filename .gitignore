@@ -47,6 +47,8 @@ public/build/
 dist/
 build/
 coverage/
+/backend/node_modules
+/backend/.env
 
 # MongoDB dump files
 dump/
