@@ -30,7 +30,7 @@ Thumbs.db
 # --------------------
 # Next.js frontend
 # --------------------
-./frontend/.next
+.next
 out/
 .vercel/
 .vscode/
