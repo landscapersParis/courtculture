@@ -1,5 +1,5 @@
 {
-  "name": "root",
+  "name": "courtculture-root",
   "private": true,
   "workspaces": [
     "frontend"
@@ -10,7 +10,9 @@
     "start": "npm --prefix frontend run start"
   },
   "dependencies": {
-    "next": "^15.5.2"
+    "next": "^15.5.2",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
   }
 }
 
